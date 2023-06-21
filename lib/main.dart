@@ -5,6 +5,7 @@ import 'package:firebase_core/firebase_core.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
+    // name: 'ecommerceapp',
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(const MyApp());
