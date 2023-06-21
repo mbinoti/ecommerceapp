@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "188062267542",
+    "project_id": "ecommerce-app-4597c",
+    "storage_bucket": "ecommerce-app-4597c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:188062267542:android:7b2f46e01608a74997eab7",
+        "android_client_info": {
+          "package_name": "br.com.mbi.ecommerceapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "188062267542-p887lslkhjllaqnn3ed2afr1fhee6nqo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCJnfZOg34_h1DYdkYMw7QEOYWqTmKO854"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "188062267542-p887lslkhjllaqnn3ed2afr1fhee6nqo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
