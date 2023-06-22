@@ -1,53 +1,65 @@
 import 'package:flutter/material.dart';
+import 'auth_service.dart';
 import 'login_notifier.dart';
+import 'login_state.dart';
 
 class RegisterPage extends StatelessWidget {
-  final LoginNotifier loginNotifier;
-
-  RegisterPage({required this.loginNotifier});
+  // final LoginNotifier loginNotifier;
+  final AuthService authService = AuthService();
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+  final ValueNotifier<LoginState> loginState =
+      ValueNotifier<LoginState>(LoginState());
+
+  RegisterPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: ValueListenableBuilder<LoginState>(
-        valueListenable: loginNotifier,
-        builder: (context, state, child) {
-          if (state.loading) {
-            return const SizedBox(
-              width: 40,
-              height: 40,
-              child: CircularProgressIndicator(),
-            );
-          }
+      appBar: AppBar(
+        title: const Text('Register'),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
+      body: SafeArea(
+        child: Column(
+          children: [
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(labelText: 'Email'),
+            ),
+            TextField(
+              controller: passwordController,
+              decoration: const InputDecoration(labelText: 'Password'),
+              obscureText: true,
+            ),
+            ElevatedButton(
+              onPressed: () async {
+                String result = await authService.signUp(
+                    emailController.text, passwordController.text);
+                loginState.value.error = result;
 
-          return Column(
-            children: [
-              TextField(
-                controller: emailController,
-                decoration: InputDecoration(labelText: 'Email'),
-              ),
-              TextField(
-                controller: passwordController,
-                decoration: InputDecoration(labelText: 'Password'),
-                obscureText: true,
-              ),
-              ElevatedButton(
-                onPressed: () async {
-                  await loginNotifier.signUp(
-                    emailController.text,
-                    passwordController.text,
+                // await loginNotifier.createUserWithEmailAndPassword(
+                //   emailController.text,
+                //   passwordController.text,
+                // );
+                // criar um snackbar
+                WidgetsBinding.instance.addPostFrameCallback((_) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                      content: Text(loginState.value.error),
+                      backgroundColor: Colors.red,
+                    ),
                   );
-                },
-                child: const Text('Sign Up'),
-              ),
-              if (state.error.isNotEmpty) Text(state.error),
-              if (state.loggedIn) Text('Signed Up'),
-            ],
-          );
-        },
+                });
+              },
+              child: const Text('Sign Up'),
+            ),
+          ],
+        ),
       ),
     );
   }

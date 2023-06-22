@@ -1,9 +1,12 @@
 import 'package:ecommerceapp/login_repository.dart';
 import 'package:flutter/material.dart';
 
+import 'login_state.dart';
+
 /// Notificador para gerenciar o estado do login e registro.
 class LoginNotifier extends ValueNotifier<LoginState> {
   final LoginRepository loginRepository;
+  String errorMessage = '';
 
   /// Construtor para a classe LoginNotifier.
   ///
@@ -15,14 +18,18 @@ class LoginNotifier extends ValueNotifier<LoginState> {
   ///
   /// Atualiza o estado do notificador conforme necessário durante o
   /// processo de login.
-  Future login(String email, String password) async {
+  Future signInWithEmailAndPassword(String email, String password) async {
     try {
       value = LoginState(loading: true);
-      final loggedIn =
-          await loginRepository.signInWithEmailAndPassword(email, password);
+      final loggedIn = await loginRepository.signInWithEmailAndPassword(
+        email,
+        password,
+      );
       value = LoginState(loading: false, loggedIn: loggedIn);
     } catch (e) {
       value = LoginState(loading: false, error: e.toString());
+      // errorMessage = e.toString();
+      notifyListeners();
     }
   }
 
@@ -30,7 +37,7 @@ class LoginNotifier extends ValueNotifier<LoginState> {
   ///
   /// Atualiza o estado do notificador conforme necessário durante
   /// o processo de registro.
-  Future signUp(String email, String password) async {
+  Future createUserWithEmailAndPassword(String email, String password) async {
     try {
       value = LoginState(loading: true);
       final signedUp =
@@ -38,18 +45,26 @@ class LoginNotifier extends ValueNotifier<LoginState> {
       value = LoginState(loading: false, loggedIn: signedUp);
     } catch (e) {
       value = LoginState(loading: false, error: e.toString());
+      notifyListeners();
     }
   }
-}
 
-/// Representa o estado do login e registro.
-class LoginState {
-  final bool
-      loading; // Representa se uma operação de login/registro está em andamento.
-  final String error; // Representa qualquer erro que possa ter ocorrido durante
-  //o login/registro.
-  final bool loggedIn; // Representa se o usuário está logado.
-
-  /// Construtor para a classe LoginState.
-  LoginState({this.loading = false, this.error = '', this.loggedIn = false});
+  String getErrorMessage(String errorCode) {
+    switch (errorCode) {
+      case "invalid-email":
+        return "Your email address appears to be malformed.";
+      case "wrong-password":
+        return "Your password is wrong.";
+      case "user-not-found":
+        return "User with this email doesn't exist.";
+      case "user-disabled":
+        return "User with this email has been disabled.";
+      case "too-many-requests":
+        return "Too many requests. Try again later.";
+      case "operation-not-allowed":
+        return "Signing in with Email and Password is not enabled.";
+      default:
+        return "An undefined Error happened.";
+    }
+  }
 }

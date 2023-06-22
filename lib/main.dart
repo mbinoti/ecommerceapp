@@ -1,3 +1,4 @@
+import 'package:ecommerceapp/login_form.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'login_repository.dart';
@@ -23,11 +24,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LoginPage(
-          loginNotifier: LoginNotifier(loginRepository: loginRepository)),
+      home: LoginForm(),
+      // home: LoginPage(
+      //   loginNotifier: LoginNotifier(loginRepository: loginRepository),
+      // ),
       routes: {
-        '/register': (_) => RegisterPage(
-            loginNotifier: LoginNotifier(loginRepository: loginRepository)),
+        '/register': (_) => RegisterPage(),
       },
     );
   }
